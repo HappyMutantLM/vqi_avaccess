@@ -1,0 +1,8 @@
+############# import libraries ##################
+library(tidyverse)
+library(lubridate)
+
+############# import data ######################
+avaccess_proc <- read_csv('input/AVACCESS_PROC_date.csv')
+
+############ remove retired variables ########
