@@ -1,8 +1,273 @@
-############# import libraries ##################
+################################ Load libraries ################################
 library(tidyverse)
 library(lubridate)
 
-############# import data ######################
-avaccess_proc <- read_csv('input/AVACCESS_PROC_date.csv')
+################################ Load PROC Data ################################
+avaccess_proc <- read_csv("input/AVACCESS_PROC_date.csv")
 
-############ remove retired variables ########
+############################### Clean PROC Fields ##############################
+avaccess_proc <- avaccess_proc %>% #remove retired fields
+   select (SURGERY_DT,PATIENTID,PRIMPROCID,DEAD,PROC_SURVIVALDAYS,REGIONID,CENTERID,PHYSICIANID,SURGWEEKDAY,TOTAL_LOS,POSTOP_LOS,GENDER,RACE,ETHNICITY,HTCM,WTKG,PERF_SITE,PRIMARYINSURER,AGE,AGECAT,S_SSN_INDICATOR,TRANSFER,PREOP_FUNCSTATUS,PREOP_SMOKING,QUIT_SMKG_DAYS,HTN,EJECTION_FRACTION,PREOP_DIABETES,PRIOR_CAD,PRIOR_CABG,PRIOR_PCI,PREOP_DYSRHYTHMIA,PRIOR_CHF,COPD,DIALYSIS_ONSET_DAYS,CURRENT_ACCESS,GFR,CKD,PREOP_ASA,PREOP_P2Y,PREOP_STATIN,PREOP_CREAT,LIVINGSTATUS,ASACLASS,HEMO,PREVIOUS_ACCESS_NUM,PREVIOUS_ACCESS_EXIST,SIDE_PREV_ACCESS_1,SIDE_PREV_ACCESS_2,SIDE_PREV_ACCESS_3,SIDE_PREV_ACCESS_4,TYPE_PREV_ACCESS_1,TYPE_PREV_ACCESS_2,TYPE_PREV_ACCESS_3,TYPE_PREV_ACCESS_4,ACCESS_LOCATION_ALL_1,ACCESS_LOCATION_ALL_2,ACCESS_LOCATION_ALL_3,ACCESS_LOCATION_ALL_4,CENTRAL_VENOUS_DIALYSIS_0,CENTRAL_VENOUS_DIALYSIS_1,CENTRAL_VENOUS_DIALYSIS_2,CENTRAL_VENOUS_DIALYSIS_3,CENTRAL_VENOUS_DIALYSIS_4,OTHER_CATH_DEVICES,OTHER_CENTRAL_VENOUS_DEV_0,OTHER_CENTRAL_VENOUS_DEV_1,OTHER_CENTRAL_VENOUS_DEV_2,OTHER_CENTRAL_VENOUS_DEV_3,OTHER_CENTRAL_VENOUS_DEV_4,R_PREV_OTHER_CVD_1,R_PREV_OTHER_CVD_2,R_PREV_OTHER_CVD_3,L_PREV_OTHER_CVD_1,L_PREV_OTHER_CVD_2,L_PREV_OTHER_CVD_3,R_CUR_OTHER_CVD_1,R_CUR_OTHER_CVD_2,R_CUR_OTHER_CVD_3,L_CUR_OTHER_CVD_1,L_CUR_OTHER_CVD_2,L_CUR_OTHER_CVD_3,LOWER_EXTREM_TUN_CATH_0,LOWER_EXTREM_TUN_CATH_1,LOWER_EXTREM_TUN_CATH_2,LOWER_EXTREM_TUN_CATH_3,LOWER_EXTREM_TUN_CATH_4,OTHER_ACCESS_0,OTHER_ACCESS_1,OTHER_ACCESS_2,OTHER_ACCESS_3,OTHER_ACCESS_99,IMAGING_0,IMAGING_1,IMAGING_2,IMAGING_3,IMAGING_4,PREOP_ARTERY_DIAMETER,PREOP_VEIN_DIAMETER,ESRD,IVDRUGUSE,PAD,PREOP_ANTICOAG,ABX,ABX_START,ABX_STOP,ARTINTERV_NEW,GRAFT_TYPE_PROSTHETIC_B,S_GRAFT_DIA_PROSTHETIC_GUDID,S_GRAFT_DIA_PROSTHETIC,TAPERED_GRAFT,S_GRAFT_LENGTH_PROST_GUDID,S_GRAFT_LENGTH_PROSTHETIC,VENINTERV_NEW,ANESTHESIA,SIDE,ACCESSTYPE,REASONNOTAUTO_1,REASONNOTAUTO_2,REASONNOTAUTO_4,REASONNOTAUTO_5,REASONNOTAUTO_6,REASONNOTAUTO_7,REASONNOTAUTO_8,REASONNOTAUTO_9,REASONNOTAUTO_10,REASONNOTAUTO_99,S_CONDUIT,TRANSLOCATED_VEIN,HERO_GRAFT_REPLACED,INFLOW_ARTERY,OUTFLOW_VEIN_ALL,HERO_OUTFLOW_VEIN,S_DIAMETER_HERO_GUDID,S_DIAMETER_HERO,S_GRAFT_LENGTH_HERO_GUDID,S_LENGTH_HERO,ANA_LEN,ANA_VEIN_LEN,ANA_ART_LEN,ANA_MATERIAL,ANA_TYPE,ANA_CONFIG,PLANNED2STAGE_NEW,CCPROC_0,CCPROC_1,CCPROC_2,CCPROC_3,CCPROC_4,CCPROC_5,CCPROC_6,CCPROC_7,CCPROC_8,CCPROC_9,CCPROC_10,CCPROC_99,HDA_GRAFT_MANF_GUDID_B,S_OTHER_DEVICE,S_FAILURE_DETAILS,S_VENOUS_ACCESS_1,TARGET_ARTERY_DIAMETER,TARGET_VEIN_DIAMETER,S_FISTULA_INFLOW_1,S_FISTULA_OUTFLOW_1,S_ARTERIAL_ACCESS,S_VENOUS_ACCESS_2,S_FISTULA_INFLOW_2,S_FISTULA_OUTFLOW_2,S_ENDO_AVF_SUCCESFUL,S_ENDO_CONCCOM_PROC_0,S_ENDO_CONCCOM_PROC_1,S_ENDO_CONCCOM_PROC_2,S_ENDO_CONCCOM_PROC_3,S_ENDO_CONCCOM_PROC_4,S_ENDO_CONCCOM_PROC_OTH,S_ENDO_CONCCOM_PROC_99,S_CENTER_ZIPCODE,S_ENDO_BRACHIAL_ARTERY,S_ENDO_BRACHIAL_VEIN,S_ENDO_DEEP_PERF_VEIN,S_ENDO_PROXIMAL_RADIAL,S_ENDO_ULNAR_ARTERY,S_ENDO_ULNAR_VEIN,S_ENDO_VEIN_ACCESSED,S_ENDO_VEIN_EXPECTED_MATURE,DC_STATUS,POSTOP_MORTCAUSE,IMMEDIATE_POSTOP_COMP_0,IMMEDIATE_POSTOP_COMP_1,IMMEDIATE_POSTOP_COMP_2,IMMEDIATE_POSTOP_COMP_3,IMMEDIATE_POSTOP_COMP_4,IMMEDIATE_POSTOP_COMP_5,BLEEDING_MGT,ISCHEMIC_STEAL_MGT,ISCHEMIC_MONO_NERUOP_MGT,THROMBOSIS_MGT_1,THROMBOSIS_MGT_2,THROMBOSIS_MGT_3,THROMBOSIS_MGT_4,THROMBOSIS_MGT_5,THROMBOSIS_STATUS,ANY_CHANGE_MEDICATION,DC_ASA,DC_P2Y,DC_STATIN,DC_ANTICOAG,S_HDA_GRAFT_TAPDIAMIN_NUM,S_HDA_GRAFT_TAPDIAMAX_NUM,LTF_CALC,S_SUBMIT_WO_VALIDATION,S_ENDO_AVF_DEVICE,S_CREATED_DT,S_PATIENT_ZIPCODE,S_UPDATED_DT,S_CENTER_STATE)
+#216 vars
+
+############################### Proc Data Types ################################
+charVars <- c("PATIENTID","PRIMPROCID","REGIONID","CENTERID","PHYSICIANID","GRAFT_TYPE_PROSTHETIC_B","S_GRAFT_DIA_PROSTHETIC_GUDID","S_GRAFT_LENGTH_PROST_GUDID","S_DIAMETER_HERO_GUDID","S_GRAFT_LENGTH_HERO_GUDID","S_OTHER_DEVICE","S_FAILURE_DETAILS","S_VENOUS_ACCESS_1","S_FISTULA_INFLOW_1","S_FISTULA_OUTFLOW_1","S_ARTERIAL_ACCESS","S_VENOUS_ACCESS_2","S_FISTULA_INFLOW_2","S_FISTULA_OUTFLOW_2","S_ENDO_CONCCOM_PROC_OTH","S_CENTER_ZIPCODE","S_SUBMIT_WO_VALIDATION","S_PATIENT_ZIPCODE","S_CENTER_STATE")
+
+factorVars <- c("GENDER","RACE","PERF_SITE","PRIMARYINSURER","AGECAT","S_SSN_INDICATOR","TRANSFER","PREOP_FUNCSTATUS","PREOP_SMOKING","HTN","EJECTION_FRACTION","PREOP_DIABETES","PRIOR_CAD","PRIOR_CABG","PRIOR_PCI","PREOP_DYSRHYTHMIA","PRIOR_CHF","COPD","CURRENT_ACCESS","CKD","PREOP_ASA","PREOP_P2Y","PREOP_STATIN","LIVINGSTATUS","ASACLASS","SIDE_PREV_ACCESS_1","SIDE_PREV_ACCESS_2","SIDE_PREV_ACCESS_3","SIDE_PREV_ACCESS_4","TYPE_PREV_ACCESS_1","TYPE_PREV_ACCESS_2","TYPE_PREV_ACCESS_3","TYPE_PREV_ACCESS_4","ACCESS_LOCATION_ALL_1","ACCESS_LOCATION_ALL_2","ACCESS_LOCATION_ALL_3","ACCESS_LOCATION_ALL_4","ESRD","IVDRUGUSE","PAD","PREOP_ANTICOAG","ABX","ABX_START","ABX_STOP","ANESTHESIA","SIDE","ACCESSTYPE","S_CONDUIT","TRANSLOCATED_VEIN","INFLOW_ARTERY","OUTFLOW_VEIN_ALL","HERO_OUTFLOW_VEIN","ANA_MATERIAL","ANA_TYPE","ANA_CONFIG","HDA_GRAFT_MANF_GUDID_B","S_ENDO_VEIN_ACCESSED","S_ENDO_VEIN_EXPECTED_MATURE","DC_STATUS","POSTOP_MORTCAUSE","BLEEDING_MGT","ISCHEMIC_STEAL_MGT","ISCHEMIC_MONO_NERUOP_MGT","THROMBOSIS_STATUS","DC_ASA","DC_P2Y","DC_STATIN","DC_ANTICOAG","LTF_CALC","S_ENDO_AVF_DEVICE")
+
+numVars <- c("PROC_SURVIVALDAYS","SURGWEEKDAY","TOTAL_LOS","POSTOP_LOS","HTCM","WTKG","AGE","QUIT_SMKG_DAYS","DIALYSIS_ONSET_DAYS","GFR","PREOP_CREAT","HEMO","PREVIOUS_ACCESS_NUM","PREOP_ARTERY_DIAMETER","PREOP_VEIN_DIAMETER","S_GRAFT_DIA_PROSTHETIC","S_GRAFT_LENGTH_PROSTHETIC","S_DIAMETER_HERO","S_LENGTH_HERO","ANA_LEN","ANA_VEIN_LEN","ANA_ART_LEN","TARGET_ARTERY_DIAMETER","TARGET_VEIN_DIAMETER","S_HDA_GRAFT_TAPDIAMIN_NUM","S_HDA_GRAFT_TAPDIAMAX_NUM")
+
+logicalVars <- c("DEAD","ETHNICITY","PREVIOUS_ACCESS_EXIST","CENTRAL_VENOUS_DIALYSIS_0","CENTRAL_VENOUS_DIALYSIS_1","CENTRAL_VENOUS_DIALYSIS_2","CENTRAL_VENOUS_DIALYSIS_3","CENTRAL_VENOUS_DIALYSIS_4","OTHER_CATH_DEVICES","OTHER_CENTRAL_VENOUS_DEV_0","OTHER_CENTRAL_VENOUS_DEV_1","OTHER_CENTRAL_VENOUS_DEV_2","OTHER_CENTRAL_VENOUS_DEV_3","OTHER_CENTRAL_VENOUS_DEV_4","R_PREV_OTHER_CVD_1","R_PREV_OTHER_CVD_2","R_PREV_OTHER_CVD_3","L_PREV_OTHER_CVD_1","L_PREV_OTHER_CVD_2","L_PREV_OTHER_CVD_3","R_CUR_OTHER_CVD_1","R_CUR_OTHER_CVD_2","R_CUR_OTHER_CVD_3","L_CUR_OTHER_CVD_1","L_CUR_OTHER_CVD_2","L_CUR_OTHER_CVD_3","LOWER_EXTREM_TUN_CATH_0","LOWER_EXTREM_TUN_CATH_1","LOWER_EXTREM_TUN_CATH_2","LOWER_EXTREM_TUN_CATH_3","LOWER_EXTREM_TUN_CATH_4","OTHER_ACCESS_0","OTHER_ACCESS_1","OTHER_ACCESS_2","OTHER_ACCESS_3","OTHER_ACCESS_99","IMAGING_0","IMAGING_1","IMAGING_2","IMAGING_3","IMAGING_4","ARTINTERV_NEW","TAPERED_GRAFT","VENINTERV_NEW","REASONNOTAUTO_1","REASONNOTAUTO_2","REASONNOTAUTO_4","REASONNOTAUTO_5","REASONNOTAUTO_6","REASONNOTAUTO_7","REASONNOTAUTO_8","REASONNOTAUTO_9","REASONNOTAUTO_10","REASONNOTAUTO_99","HERO_GRAFT_REPLACED","PLANNED2STAGE_NEW","CCPROC_0","CCPROC_1","CCPROC_2","CCPROC_3","CCPROC_4","CCPROC_5","CCPROC_6","CCPROC_7","CCPROC_8","CCPROC_9","CCPROC_10","CCPROC_99","S_ENDO_AVF_SUCCESFUL","S_ENDO_CONCCOM_PROC_0","S_ENDO_CONCCOM_PROC_1","S_ENDO_CONCCOM_PROC_2","S_ENDO_CONCCOM_PROC_3","S_ENDO_CONCCOM_PROC_4","S_ENDO_CONCCOM_PROC_99","S_ENDO_BRACHIAL_ARTERY","S_ENDO_BRACHIAL_VEIN","S_ENDO_DEEP_PERF_VEIN","S_ENDO_PROXIMAL_RADIAL","S_ENDO_ULNAR_ARTERY","S_ENDO_ULNAR_VEIN","IMMEDIATE_POSTOP_COMP_0","IMMEDIATE_POSTOP_COMP_1","IMMEDIATE_POSTOP_COMP_2","IMMEDIATE_POSTOP_COMP_3","IMMEDIATE_POSTOP_COMP_4","IMMEDIATE_POSTOP_COMP_5","THROMBOSIS_MGT_1","THROMBOSIS_MGT_2","THROMBOSIS_MGT_3","THROMBOSIS_MGT_4","THROMBOSIS_MGT_5","ANY_CHANGE_MEDICATION")
+
+#Correct Date formats
+avaccess_proc <- avaccess_proc %>%
+   mutate(across(contains('_DT'), ~mdy(.)))
+
+#apply data types
+avaccess_proc[numVars] <- lapply(avaccess_proc[numVars], as.numeric)
+avaccess_proc[charVars] <- lapply(avaccess_proc[charVars], as.character)
+avaccess_proc[logicalVars] <- lapply(avaccess_proc[logicalVars], as.logical)
+avaccess_proc[factorVars] <- lapply(avaccess_proc[factorVars], as.factor)
+
+############################# Recode Proc factors ##############################
+avaccess_proc$factor_surgweekday <- factor(avaccess_proc$SURGWEEKDAY, labels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+
+avaccess_proc$factor_gender <- factor(avaccess_proc$GENDER, labels = c("Male", "Female"))
+
+avaccess_proc$factor_race <- factor(avaccess_proc$RACE, labels = c("American Indian or Alaskan Native","Asian","Black or African American","Native Hawaiian or other Pacific Islander","White","More than 1 race","Unknown / Other"))
+
+avaccess_proc$factor_perf_site <- factor(avaccess_proc$PERF_SITE, labels = c("Hospital outpatient","Hospital inpatient","Ambulatory center","Office"))
+
+avaccess_proc$factor_primaryinsurer <- factor(avaccess_proc$PRIMARYINSURER, labels = c("Medicare", "Medicaid", "Commercial", "Military/VA", "Non US insurance", "Self pay", "Medicare Advantage"))
+
+avaccess_proc$factor_transfer <- factor(avaccess_proc$TRANSFER, labels = c("No", "Hospital", "Rehab unit"))
+
+avaccess_proc$factor_preop_funcstatus <- factor(avaccess_proc$PREOP_FUNCSTATUS, labels = c("Full","Light work","Self care","Assisted care","Bed bound"))
+
+avaccess_proc$factor_preop_smoking <- factor(avaccess_proc$PREOP_SMOKING, labels = c("Never", "Prior", "Current"))
+
+avaccess_proc$factor_htn <- factor(avaccess_proc$HTN, labels = c("No", "Yes (>=140/90 or history - retired 10/17/2019)", "Yes, controlled", "Yes, uncontrolled"))
+
+avaccess_proc$factor_ejection_fraction <- factor(avaccess_proc$EJECTION_FRACTION, labels = c("<30%","30-50%",">50%","Not done","Unknown"))
+
+avaccess_proc$factor_preop_diabetes <- factor(avaccess_proc$PREOP_DIABETES, labels = c("None", "Diet", "Non-insulin meds", "Insulin with or without Non-insulin Meds (retired 10/17/2019)","Insulin + Non-insulin meds","Insulin only" ))
+
+avaccess_proc$factor_prior_cad <- factor(avaccess_proc$PRIOR_CAD, labels = c("None", "Hx MI but no sx", "Stable angina", "Unstable angina or MI < 6 mos (retired 09/12/2012)", "MI < 6 mos", "Unstable angina", "CAD, asymptomatic"))
+
+avaccess_proc$factor_prior_cabg <- factor(avaccess_proc$PRIOR_CABG, labels = c("None", "<5yr ago", ">= 5yrs ago"))
+
+avaccess_proc$factor_prior_pci <- factor(avaccess_proc$PRIOR_PCI, labels = c("None", "<5yr ago", ">= 5yrs ago"))
+
+avaccess_proc$factor_preop_dysrhythmia <- factor(avaccess_proc$PREOP_DYSRHYTHMIA, labels = c("No","Yes, ventricular","A-V block w pacemaker","Yes, with ICD","Yes, atrial","Other"))
+
+avaccess_proc$factor_prior_chf <- factor(avaccess_proc$PRIOR_CHF, labels = c("None", "Asymptomatic, hx only", "Mild" ,"Moderate CHF", "Severe CHF"))
+
+avaccess_proc$factor_copd <- factor(avaccess_proc$COPD, labels = c("No", "Not treated", "On meds", "On home oxygen"))
+
+avaccess_proc$factor_current_access <- factor(avaccess_proc$CURRENT_ACCESS, labels = c("Percutaneous catheter","Tunneled catheter","Prior AV access"))
+
+avaccess_proc$factor_ckd <- factor(avaccess_proc$CKD, labels = c("Stage 1","Stage 2","Stage 3","Stage 4","Stage 5"))
+
+avaccess_proc$factor_preop_asa <- factor(avaccess_proc$PREOP_ASA, labels = c("No", "Yes", "No, for medical reason"," Non-compliant"))
+
+avaccess_proc$factor_preop_p2y <- factor(avaccess_proc$PREOP_P2Y, labels = c("None", "Clopidogrel", "Prasugrel", "Ticlopidine", "Ticagrelor", "Other", "No, for medical reason", "Non-compliant"))
+
+avaccess_proc$factor_preop_statin <- factor(avaccess_proc$PREOP_STATIN, labels = c("No", "Yes","No, for medical reason","Non-compliant"))
+
+avaccess_proc$factor_livingstatus <- factor(avaccess_proc$LIVINGSTATUS, labels = c("Home", "Nursing home", "Homeless"))
+
+avaccess_proc$factor_asaclass <- factor(avaccess_proc$ASACLASS, labels = c("healthy patient", "mild systemic disease", "severe systemic disease", "severe systemic disease that is a constant threat to life", "moribund - not expected to survive without the operation"))
+
+avaccess_proc$factor_side_prev_access_1 <- factor(avaccess_proc$SIDE_PREV_ACCESS_1, labels = c("Right","Left"))
+
+avaccess_proc$factor_side_prev_access_2 <- factor(avaccess_proc$SIDE_PREV_ACCESS_1, labels = c("Right","Left"))
+
+avaccess_proc$factor_side_prev_access_3 <- factor(avaccess_proc$SIDE_PREV_ACCESS_1, labels = c("Right","Left"))
+
+avaccess_proc$factor_side_prev_access_4 <- factor(avaccess_proc$SIDE_PREV_ACCESS_1, labels = c("Right","Left"))
+
+ avaccess_proc$factor_type_prev_access_1 <- factor(avaccess_proc$TYPE_PREV_ACCESS_1, labels = c("Fistula - Upper Forearm Cephalic","Fistula - Upper Forearm Basilic","Fistula - Upper Arm Cephalic","Fistula - Upper Arm Basilic","Fistula - Upper Brachial","Fistula - Upper Other","Fistula Lower Extremity","Graft - Upper Extremity, Forearm","Graft - Upper Extremity, Non-HeRO","Graft - Upper Extremity, HeRO","Graft - Lower Extremity"))
+
+avaccess_proc$factor_type_prev_access_2 <- factor(avaccess_proc$TYPE_PREV_ACCESS_2, labels = c("Fistula - Upper Forearm Cephalic","Fistula - Upper Forearm Basilic","Fistula - Upper Arm Cephalic","Fistula - Upper Arm Basilic","Fistula - Upper Brachial","Fistula - Upper Other","Fistula Lower Extremity","Graft - Upper Extremity, Forearm","Graft - Upper Extremity, Non-HeRO","Graft - Upper Extremity, HeRO","Graft - Lower Extremity"))
+
+avaccess_proc$factor_type_prev_access_3 <- factor(avaccess_proc$TYPE_PREV_ACCESS_3, labels = c("Fistula - Upper Forearm Cephalic","Fistula - Upper Forearm Basilic","Fistula - Upper Arm Cephalic","Fistula - Upper Arm Basilic","Fistula - Upper Brachial","Fistula - Upper Other","Fistula Lower Extremity","Graft - Upper Extremity, Forearm","Graft - Upper Extremity, Non-HeRO","Graft - Upper Extremity, HeRO","Graft - Lower Extremity"))
+
+avaccess_proc$factor_type_prev_access_4 <- factor(avaccess_proc$TYPE_PREV_ACCESS_4, labels = c("Fistula - Upper Forearm Cephalic","Fistula - Upper Forearm Basilic","Fistula - Upper Arm Cephalic","Fistula - Upper Arm Basilic","Fistula - Upper Brachial","Fistula - Upper Other","Fistula Lower Extremity","Graft - Upper Extremity, Forearm","Graft - Upper Extremity, Non-HeRO","Graft - Upper Extremity, HeRO","Graft - Lower Extremity"))
+
+avaccess_proc$factor_access_location_all_1 <- factor(avaccess_proc$ACCESS_LOCATION_ALL_1, labels = c("Forearm cephalic","Forearm basilic","Upper arm cephalic","Upper arm basilic","Brachial","Upper arm other","Lower extremity","Forearm","Upper extremity, non-HeRO","Upper extremity, HeRO","Lower extremity"))
+
+avaccess_proc$factor_access_location_all_2 <- factor(avaccess_proc$ACCESS_LOCATION_ALL_2, labels = c("Forearm cephalic","Forearm basilic","Upper arm cephalic","Upper arm basilic","Brachial","Upper arm other","Lower extremity","Forearm","Upper extremity, non-HeRO","Upper extremity, HeRO","Lower extremity"))
+
+avaccess_proc$factor_access_location_all_3 <- factor(avaccess_proc$ACCESS_LOCATION_ALL_3, labels = c("Forearm cephalic","Forearm basilic","Upper arm cephalic","Upper arm basilic","Brachial","Upper arm other","Lower extremity","Forearm","Upper extremity, non-HeRO","Upper extremity, HeRO","Lower extremity"))
+
+avaccess_proc$factor_access_location_all_4 <- factor(avaccess_proc$ACCESS_LOCATION_ALL_4, labels = c("Forearm cephalic","Forearm basilic","Upper arm cephalic","Upper arm basilic","Brachial","Upper arm other","Lower extremity","Forearm","Upper extremity, non-HeRO","Upper extremity, HeRO","Lower extremity"))
+
+avaccess_proc <- avaccess_proc %>% #logical vars
+   rename(preop_no_central_venous_dialysis = CENTRAL_VENOUS_DIALYSIS_0) %>%
+   rename(preop_prior_r_venous_dialysis = CENTRAL_VENOUS_DIALYSIS_1) %>%   
+   rename(preop_prior_l_venous_dialysis = CENTRAL_VENOUS_DIALYSIS_2) %>%
+   rename(preop_current_r_venous_dialysis = CENTRAL_VENOUS_DIALYSIS_3) %>%
+   rename(preop_current_l_venous_dialysis = CENTRAL_VENOUS_DIALYSIS_4)
+
+avaccess_proc <- avaccess_proc %>%
+   rename(preop_no_central_venous_device = OTHER_CENTRAL_VENOUS_DEV_0) %>%
+   rename(preop_prior_r_venous_device = OTHER_CENTRAL_VENOUS_DEV_1) %>%   
+   rename(preop_prior_l_venous_device = OTHER_CENTRAL_VENOUS_DEV_2) %>%
+   rename(preop_current_r_venous_device = OTHER_CENTRAL_VENOUS_DEV_3) %>%
+   rename(preop_current_l_venous_device = OTHER_CENTRAL_VENOUS_DEV_4)
+
+avaccess_proc <- avaccess_proc %>%
+   rename(preop_r_prev_other_picc = R_PREV_OTHER_CVD_1) %>%
+   rename(preop_r_prev_other_port = R_PREV_OTHER_CVD_2) %>%   
+   rename(preop_r_prev_other_cardiac = R_PREV_OTHER_CVD_3) 
+
+avaccess_proc <- avaccess_proc %>%
+   rename(preop_l_prev_other_picc = L_PREV_OTHER_CVD_1) %>%
+   rename(preop_l_prev_other_port = L_PREV_OTHER_CVD_2) %>%   
+   rename(preop_l_prev_other_cardiac = L_PREV_OTHER_CVD_3) 
+
+avaccess_proc <- avaccess_proc %>%
+   rename(preop_r_cur_other_picc = R_CUR_OTHER_CVD_1) %>%
+   rename(preop_r_cur_other_port = R_CUR_OTHER_CVD_2) %>%   
+   rename(preop_r_cur_other_cardiac = R_CUR_OTHER_CVD_3) 
+
+avaccess_proc <- avaccess_proc %>%
+   rename(preop_l_cur_other_picc = L_CUR_OTHER_CVD_1) %>%
+   rename(preop_l_cur_other_port = L_CUR_OTHER_CVD_2) %>%   
+   rename(preop_l_cur_other_cardiac = L_CUR_OTHER_CVD_3) 
+
+avaccess_proc <- avaccess_proc %>%
+   rename(preop_no_le_tun_cath = LOWER_EXTREM_TUN_CATH_0) %>%
+   rename(preop_r_prev_le_tun_cath = LOWER_EXTREM_TUN_CATH_1) %>%   
+   rename(preop_l_prev_le_tun_cath = LOWER_EXTREM_TUN_CATH_2) %>%
+   rename(preop_r_cur_le_tun_cath = LOWER_EXTREM_TUN_CATH_3) %>%
+   rename(preop_l_cur_le_tun_cath = LOWER_EXTREM_TUN_CATH_4)
+
+avaccess_proc <- avaccess_proc %>%
+   rename(preop_no_other_access = OTHER_ACCESS_0) %>%
+   rename(preop_transhep_cath_cath = OTHER_ACCESS_1) %>%   
+   rename(preop_translumbar_cath = OTHER_ACCESS_2) %>%
+   rename(preop_ax_ax_graft = OTHER_ACCESS_3)
+
+avaccess_proc <- avaccess_proc %>%
+   rename(preop_no_imaging = IMAGING_0) %>%
+   rename(preop_arterial_duplex = IMAGING_1) %>%
+   rename(preop_arteriogram = IMAGING_2) %>%
+   rename(preop_vein_mapping = IMAGING_3) %>%
+   rename(preop_venogram = IMAGING_4)
+
+avaccess_proc$factor_esrd <- factor(avaccess_proc$ESRD, labels = c("Functioning transplant, never on hemo or peritoneal dialysis","Functioning transplant, previously on hemo or peritoneal dialysis","Hemodialysis dependent","Pre-dialysis","Peritoneal dialysis dependent"))
+
+avaccess_proc$factor_ivdruguse <- factor(avaccess_proc$IVDRUGUSE, labels = c("No","Past history","Current history"))
+
+avaccess_proc$factor_pad <- factor(avaccess_proc$PAD, labels = c("Asymptomatic", "Claudication (retired 10/17/2019)","CLI (retired 10/17/2019)", "Amputation (retired 10/17/2019)","Mild claudication","Moderate claudication","Severe claudication","Ischemic rest pain","Ulcer/necrosis","Non-healing amputation","Both ulcer + non-healing amp","Acute ischemia","None"))
+
+avaccess_proc$factor_preop_anitcoag <- factor(avaccess_proc$PREOP_ANTICOAG, labels = c("None","Dabigatran (Pradaxa)","Rivaroxaban (Xarelto)","Other","No, for medical reason","Non-compliant","Vitamin K Antagonist","Apixaban (Eliquis)","Edoxaban (Savaysa)"))
+
+avaccess_proc$factor_abx <- factor(avaccess_proc$ABX, labels = c("No","Yes","No, for medical reason"))
+
+avaccess_proc$factor_abx_start <- factor(avaccess_proc$ABX_START, labels = c("No","Yes","No, for medical reason"))
+
+avaccess_proc$factor_abx_stop <- factor(avaccess_proc$ABX_STOP, labels = c("No","Yes","No, for medical reason"))
+
+avaccess_proc$factor_anesthesia <- factor(avaccess_proc$ANESTHESIA, labels = c("Local","Regional","General"))
+
+avaccess_proc$factor_side <- factor(avaccess_proc$SIDE, labels = c("Right","Left"))
+
+avaccess_proc$factor_accesstype <- factor(avaccess_proc$ACCESSTYPE, labels = c("Surgical AVF","Prosthetic AV graft, straight (retired 10/17/2019)","Prosthetic AV graft, looped (retired since 10/17/2019)","Autogenous vein AV graft (retired since 10/17/2019)","AV biograft (retired since 10/17/2019)","AV graft","Endo AVF"))
+
+avaccess_proc <- avaccess_proc %>%
+   rename(not_auto_need_acute_access = REASONNOTAUTO_1)%>%
+   rename(not_auto_no_suitable_vein = REASONNOTAUTO_2)%>%
+   rename(not_auto_other = REASONNOTAUTO_3)%>%
+   rename(not_auto_not_specified = REASONNOTAUTO_4)%>%
+   rename(not_auto_limited_life_exp = REASONNOTAUTO_5)%>%
+   rename(not_auto_morbid_obesity = REASONNOTAUTO_6)%>%
+   rename(not_auto_body_habitus = REASONNOTAUTO_7)%>%
+   rename(not_auto_patient_preference = REASONNOTAUTO_8)%>%
+   rename(not_auto_unsuitable_arterial = REASONNOTAUTO_9)%>%
+   rename(not_auto_central_venous_path = REASONNOTAUTO_10)%>%
+
+avaccess_proc$factor_s_conduit <- factor(avaccess_proc$S_CONDUIT, labels = c("Translocated vein","Prosthetic graft","Biologic graft","HeRO","Other"))
+
+avaccess_proc$factor_translocated_vein <- factor(avaccess_proc$TRANSLOCATED_VEIN, labels = c("Saphenous","Femoral","Other"))
+
+avaccess_proc$factor_inflow_artery <- factor(avaccess_proc$INFLOW_ARTERY, labels = c("Radial, snuffbox","Radial, wrist","Radial, forearm","Brachial, antecubital","Brachial, upper arm","Axillary","Common femoral","SFA","Ulnar wrist","Radial, mid-forearm", "Ulnar mid-forearm","Radial, antecubital","Ulnar antecubital","Radial, high takeoff","Other"))
+
+avaccess_proc$factor_outflow_vein_all <- factor(avaccess_proc$OUTFLOW_VEIN_ALL, labels = c("Cephalic, forearm","Cephalic, upper arm","Basilic, forearm","Basilic, upper arm","Brachial, upper arm","Axillary","Saphenous","Femoral","Other"))
+
+avaccess_proc$factor_hero_outflow <- factor(avaccess_proc$HERO_OUTFLOW_VEIN, labels = c("Internal Jugular","Subclavian","Femoral"))
+
+avaccess_proc$factor_ana_material <- factor(avaccess_proc$ANA_MATERIAL, labels = c("Monofilament nonabsorbable suture","PTFE suture","Clips","Other"))
+
+avaccess_proc$factor_ana_type <- factor(avaccess_proc$ANA_TYPE, labels = c("Interrupted","Continuous","Both"))
+
+avaccess_proc$factor_ana_config <- factor(avaccess_proc$ANA_CONFIG, labels = c("End to end","End to side","Side to side","Side to end"))
+
+avaccess_proc <- avaccess_proc %>%
+   rename(ccproc_none = CCPROC_0) %>%
+   rename(ccproc_ven_pta = CCPROC_1) %>%
+   rename(ccproc_ven_stent = CCPROC_2) %>%
+   rename(ccproc_art_pta = CCPROC_3) %>%
+   rename(ccproc_art_stent = CCPROC_4) %>%
+   rename(ccproc_art_endart = CCPROC_5) %>%
+   rename(ccproc_ven_branch_lig = CCPROC_6) %>%
+   rename(ccproc_surg_access_patch_plasty = CCPROC_7) %>%
+   rename(ccproc_superficialization = CCPROC_8) %>%
+   rename(ccproc_lipectomy = CCPROC_9) %>%
+   rename(ccproc_liposuction = CCPROC_10)
+
+avaccess_proc <- avaccess_proc %>%
+   rename(no_endo_cc = S_ENDO_CONCCOM_PROC_0) %>%
+   rename(endo_cc_ven_pta = S_ENDO_CONCCOM_PROC_1) %>%
+   rename(endo_cc_ven_stent = S_ENDO_CONCCOM_PROC_2) %>%
+   rename(endo_cc_art_pta = S_ENDO_CONCCOM_PROC_3) %>%
+   rename(endo_cc_art_stent = S_ENDO_CONCCOM_PROC_4)
+
+avaccess_proc$factor_endo_vein_accessed <- factor(avaccess_proc$S_ENDO_VEIN_ACCESSED, labels = c("Cephalic","Basilic","Other"))
+
+avaccess_proc$factor_endo_vein_to_mature <- factor(avaccess_proc$S_ENDO_VEIN_EXPECTED_MATURE, labels = c("Cephalic","Basilic","Brachial"))
+
+avaccess_proc$factor_dc_status <- factor(avaccess_proc$DC_STATUS, labels = c("Home","Rehab unit","Nursing home","Dead","Other hospital","Homeless"))
+
+avaccess_proc$factor_postop_mortcause <- factor(avaccess_proc$POSTOP_MORTCAUSE, labels = c("Related to disease or treatment","Unrelated to disease or treatment","Unsure"))
+
+avaccess_proc <- avaccess_proc %>%
+   rename(immed_postop_no_complication = IMMEDIATE_POSTOP_COMP_0) %>%
+   rename(immed_postop_bleeding = IMMEDIATE_POSTOP_COMP_1) %>%
+   rename(immed_postop_ischemic_steal = IMMEDIATE_POSTOP_COMP_2) %>%
+   rename(immed_postop_access_thrombosis = IMMEDIATE_POSTOP_COMP_3) %>%
+   rename(immed_postop_ischemic_monomelic_neuropathy = IMMEDIATE_POSTOP_COMP_4) %>%
+   rename(immed_postop_other_complication = IMMEDIATE_POSTOP_COMP_5)
+
+avaccess_proc$factor_bleeding_mgt <- factor(avaccess_proc$BLEEDING_MGT, labels = c( "None (retired since 10/17/2019)","Resolved spontaneously","Resolved w/ medical tx to correct coagulation","Required intervention/surgery"))
+
+avaccess_proc$factor_ischemic_steal_mgt <- factor(avaccess_proc$ISCHEMIC_STEAL_MGT, labels = c("Observation","Banding","Ligation","Proximalization","RUDI","DRIL","Distal revascularization"))
+
+avaccess_proc$factor_ischemic_mono_mgt <- factor(avaccess_proc$ISCHEMIC_MONO_NERUOP_MGT, labels = c("Observation","Ligation"))
+
+avaccess_proc <- avaccess_proc %>%
+   rename(thrombosis_abandonment = THROMBOSIS_MGT_1) %>%
+   rename(thrombosis_open_surgical_thrombect = THROMBOSIS_MGT_2) %>%
+   rename(thrombosis_endovascular_mechanical_throm = THROMBOSIS_MGT_3) %>%
+   rename(thrombosis_thrombolysis = THROMBOSIS_MGT_4) %>%
+   rename(thrombosis_revision = THROMBOSIS_MGT_5)
+
+avaccess_proc$factor_thrombosis_status <- factor(avaccess_proc$THROMBOSIS_STATUS, labels = c("Patent","Thrombosed"))
+
+avaccess_proc$factor_dc_asa <- factor(avaccess_proc$DC_ASA, labels = c("No","Yes","No, for medical reason","Non-compliant (retired since 12/15/2014)"))
+
+avaccess_proc$factor_dc_p2y <- factor(avaccess_proc$DC_P2Y, labels = c("None","Clopidogrel","Prasugrel","Ticlopidine","Ticagrelor","Other","No, for medical reason","Non-compliant (retired since 12/15/2014)"))
+
+avaccess_proc$factor_dc_statin <- factor(avaccess_proc$DC_STATIN, labels = c("No","Yes","No, for medical reason","Non-compliant (retired 12/15/2014)"))
+
+avaccess_proc$factor_dc_anticoag <- factor(avaccess_proc$DC_ANTICOAG, labels = c("None","Warfarin","Dabigatran","Rivaroxaban","Other","No, for medical reason","Non-compliant (retired since 12/15/2014)"))
+
+avaccess_proc$factor_ltf_calc <- factor(avaccess_proc$LTF_CALC, labels = c("No","Yes","Exclude"))
+
+avaccess_proc$factor_endo_avf_device <- factor(avaccess_proc$S_ENDO_AVF_DEVICE, labels = c("Avenu Medical: Ellipsys","BD: WavelinQ","Other"))
+
+str(avaccess_proc$SURGERY_DT)
+
+avaccess_proc %>%
+   select(SURGERY_DT,PATIENTID,PRIMPROCID,DEAD,PROC_SURVIVALDAYS,REGIONID,CENTERID,PHYSICIANID,factor_surgweekday,TOTAL_LOS,POSTOP_LOS,factor_gender,factor_race,ETHNICITY,HTCM,WTKG,factor_perf_site,factor_primaryinsurer,AGE,factor_transfer,factor_preop_funcstatus, factor_preop_smoking,QUIT_SMKG_DAYS,factor_htn,factor_ejection_fraction,factor_preop_diabetes,factor_prior_cad,factor_prior_cabg,factor_prior_pci,factor_preop_dysrhythmia,factor_prior_chf,factor_copd,DIALYSIS_ONSET_DAYS,factor_current_access,GFR,factor_ckd,factor_preop_asa,factor_preop_p2y,factor_preop_statin,PREOP_CREAT,factor_livingstatus,factor_asaclass,HEMO,PREVIOUS_ACCESS_NUM,PREVIOUS_ACCESS_EXIST,factor_side_prev_access_1,factor_side_prev_access_2,factor_side_prev_access_3,factor_side_prev_access_4,factor_type_prev_access_1,factor_type_prev_access_2,factor_type_prev_access_3,factor_type_prev_access_4,factor_access_location_all_1,factor_access_location_all_2,factor_access_location_all_3,factor_access_location_all_4,preop_no_central_venous_dialysis,preop_prior_r_venous_dialysis,preop_prior_l_venous_dialysis,preop_current_r_venous_dialysis,preop_current_l_venous_dialysis,OTHER_CATH_DEVICES,preop_no_central_venous_device,preop_prior_r_venous_device,preop_prior_l_venous_device, preop_current_r_venous_device,preop_current_l_venous_device,preop_r_prev_other_picc,preop_r_prev_other_port,preop_r_prev_other_cardiac,preop_l_prev_other_picc,preop_l_prev_other_port, preop_l_prev_other_cardiac,preop_r_cur_other_picc,preop_r_cur_other_port,preop_r_cur_other_cardiac,preop_l_cur_other_picc,preop_l_cur_other_port,preop_l_cur_other_cardiac,preop_no_le_tun_cath,preop_r_prev_le_tun_cath,preop_l_prev_le_tun_cath,preop_r_cur_le_tun_cath,preop_l_cur_le_tun_cath,preop_no_other_access,preop_transhep_cath_cath,preop_translumbar_cath,preop_ax_ax_graft,OTHER_ACCESS_99,preop_no_imaging, preop_arterial_duplex,preop_arteriogram,preop_vein_mapping,preop_venogram,PREOP_ARTERY_DIAMETER,PREOP_VEIN_DIAMETER,factor_esrd,factor_ivdruguse,factor_pad,factor_preop_anitcoag,factor_abx,factor_abx_start,factor_abx_stop,ARTINTERV_NEW,GRAFT_TYPE_PROSTHETIC_B,S_GRAFT_DIA_PROSTHETIC_GUDID,S_GRAFT_DIA_PROSTHETIC,TAPERED_GRAFT,S_GRAFT_LENGTH_PROST_GUDID,S_GRAFT_LENGTH_PROSTHETIC,VENINTERV_NEW,factor_anesthesia,factor_side,factor_accesstype,   not_auto_need_acute_access,not_auto_no_suitable_vein,not_auto_other,not_auto_not_specified,not_auto_limited_life_exp,not_auto_morbid_obesity,not_auto_body_habitus,not_auto_patient_preference,not_auto_unsuitable_arterial,not_auto_central_venous_path,REASONNOTAUTO_99,factor_s_conduit,factor_translocated_vein,HERO_GRAFT_REPLACED,factor_inflow_artery,factor_outflow_vein_all,factor_hero_outflow,S_DIAMETER_HERO_GUDID,S_DIAMETER_HERO,S_GRAFT_LENGTH_HERO_GUDID,S_LENGTH_HERO,ANA_LEN,ANA_VEIN_LEN,ANA_ART_LEN,factor_ana_material,factor_ana_type,factor_ana_config,PLANNED2STAGE_NEW,ccproc_none,ccproc_ven_pta,ccproc_ven_stent,ccproc_art_pta,ccproc_art_stent,ccproc_art_endart,ccproc_ven_branch_lig,ccproc_surg_access_patch_plasty,ccproc_superficialization,ccproc_lipectomy,ccproc_liposuction,CCPROC_99,HDA_GRAFT_MANF_GUDID_B,S_OTHER_DEVICE,S_FAILURE_DETAILS,TARGET_ARTERY_DIAMETER,TARGET_VEIN_DIAMETER,S_FISTULA_INFLOW_1,S_FISTULA_OUTFLOW_1,S_ARTERIAL_ACCESS,S_FISTULA_OUTFLOW_2,S_ENDO_AVF_SUCCESFUL,no_endo_cc,endo_cc_ven_pta,endo_cc_ven_stent,endo_cc_art_pta,endo_cc_art_stent,S_ENDO_CONCCOM_PROC_OTH,S_ENDO_CONCCOM_PROC_99,S_CENTER_ZIPCODE,S_ENDO_BRACHIAL_ARTERY,S_ENDO_BRACHIAL_VEIN,S_ENDO_DEEP_PERF_VEIN,S_ENDO_PROXIMAL_RADIAL,S_ENDO_ULNAR_ARTERY,S_ENDO_ULNAR_VEIN,factor_endo_vein_accessed,factor_endo_vein_to_mature,factor_dc_status,factor_postop_mortcause,no_complication,bleeding,ischemic_steal,access_thrombosis,ischemic_monomelic_neuropathy,other_complication,factor_bleeding_mgt,factor_ischemic_steal_mgt,factor_ischemic_mono_mgt,thrombosis_abandonment,thrombosis_open_surgical_thrombect,thrombosis_endovascular_mechanical_throm,thrombosis_thrombolysis,thrombosis_revision,factor_thrombosis_status,ANY_CHANGE_MEDICATION,factor_dc_asa,factor_dc_p2y,factor_dc_statin,factor_dc_anticoag,S_HDA_GRAFT_TAPDIAMIN_NUM,S_HDA_GRAFT_TAPDIAMAX_NUM,factor_ltf_calc,S_SUBMIT_WO_VALIDATION,factor_endo_avf_device,S_CREATED_DT,S_PATIENT_ZIPCODE,S_UPDATED_DT,S_CENTER_STATE)
